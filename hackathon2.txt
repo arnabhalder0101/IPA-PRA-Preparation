@@ -1,0 +1,254 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static void main(String args[] ) throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); sc.nextLine();
+        Bike[] bike = new Bike[n];
+        
+        
+        for(int i = 0; i<n; i++){
+            int a = sc.nextInt(); sc.nextLine();
+            int b = sc.nextInt(); sc.nextLine();
+            String c = sc.nextLine();
+            int d = sc.nextInt(); sc.nextLine();
+            bike[i] = new Bike(a,b,c,d);
+        }
+        String name = sc.nextLine();
+        
+        Bike res1 = Solution.findMaxPriceOfBike(bike);
+        Bike res2 = Solution.searchBikeByName(bike, name);
+        
+        if(res1!=null){
+            //System.out.println(res1);
+            System.out.println("id-"+res1.getId());
+            System.out.println("quantity-"+res1.getQuantity());
+            System.out.println("name-"+res1.getName());
+            System.out.println("price-"+res1.getPrice());
+        }else{
+            System.out.println("No Bike found with mentioned attribute");
+        }
+        
+        if(res2!= null){
+            System.out.println("id-"+res2.getId());
+            System.out.println("quantity-"+res2.getQuantity());
+            System.out.println("name-"+res2.getName());
+            System.out.println("price-"+res2.getPrice());
+            
+            //for(int i = 0; i<res2.length; i++){
+              //  System.out.println(res2[i]);    
+            //}
+            
+        }else{
+            System.out.println("No Bike found with mentioned attribute");
+        }
+    }
+    
+    public static Bike findMaxPriceOfBike(Bike[] b){
+        Bike[] arr = new Bike[b.length];
+        
+        for(int i = 0; i<b.length; i++){
+            for(int j = i+1; j<b.length; j++){
+                if(b[i].getPrice()>b[j].getPrice()){
+                    Bike k = b[i];
+                    b[i] = b[j];
+                    b[j] = k;
+                }
+            }
+            
+        }
+        
+        if(b.length != 0) return b[b.length-1];
+        else return null;
+        
+        
+    }
+    
+    public static Bike searchBikeByName(Bike[] b, String name){
+        for(int i = 0; i<b.length; i++){
+            if(b[i].getName().equalsIgnoreCase(name)){
+                return b[i];
+            }
+        }
+        return null;
+        
+        
+    }
+}
+
+class Bike{
+    private int id;
+    private int quan;
+    private String name;
+    private int price;
+    
+    public Bike(int id, int q, String name, int p){
+        this.id = id;
+        this.quan = q;
+        this.name = name;
+        this.price = p;
+        
+    }
+    
+    public int getId(){
+        return id;
+    }
+    
+    public int getQuantity(){
+        return quan;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public int getPrice(){
+        return price;
+    }
+}
+
+
+
+=============
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static void main(String args[]) throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); sc.nextLine();
+        
+        Grain[] grain = new  Grain[n];
+        for(int i = 0; i<n; i++){
+            int a = sc.nextInt(); sc.nextLine();
+            String b = sc.nextLine();
+            String c = sc.nextLine();
+            int d = sc.nextInt(); sc.nextLine();
+            
+            grain[i] = new Grain(a, b, c, d);
+        }
+        
+        String name = sc.nextLine();
+        
+        int res1 = Solution.countGrainByGivenName(grain, name);
+        Grain res2 = Solution.getMinGrainFromMaharashtha(grain);
+        
+        if(res1>0){
+            System.out.println(res1);
+        }else{
+            System.out.println("No Grains with matching names are found");
+        }
+        
+        if(res2!= null){
+            System.out.println(res2.getId());
+            System.out.println(res2.getName());
+            System.out.println(res2.getState());
+            System.out.println(res2.getQuantity());
+        }else{
+            System.out.println("No Grains with matching names are found");
+        }
+        
+    }
+    
+    public static int countGrainByGivenName(Grain[] g, String n){
+        int count = 0;
+        for(int i = 0; i<g.length; i++){
+            if(g[i].getName().equalsIgnoreCase(n)){
+                count += 1;
+            }
+        }
+        return count;
+        
+    }
+    
+    public static Grain getMinGrainFromMaharashtha(Grain[] g){
+        Grain[] arr = new Grain[0];
+        
+        // filter
+        for(int i =0 ; i<g.length; i++){
+            if(g[i].getState().equalsIgnoreCase("maharashtra")){
+                arr = Arrays.copyOf(arr, arr.length+1);
+                arr[arr.length-1] = g[i];
+            }
+        }
+        
+        // if  arr .lem == 0 null else -->
+        if(arr.length == 0){
+            return null;
+            
+        }else{
+            
+            // sort --
+                for(int i = 0; i<arr.length; i++){
+                    for(int j = i+1; j<arr.length; j++){
+                        if(arr[i].getQuantity()>arr[j].getQuantity()){
+                            Grain k = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = k;
+                        }
+                    }
+                }
+                return arr[0];
+            
+            
+            // // min find
+            // if(arr.length>1){
+            //     // sort --
+            //     for(int i = 0; i<arr.length; i++){
+            //         for(int j = i+1; j<arr.length; j++){
+            //             if(arr[i].getQuantity()>arr[j].getQuantity()){
+            //                 Grain k = arr[i];
+            //                 arr[i] = arr[j];
+            //                 arr[j] = k;
+            //             }
+            //         }
+            //     }
+            //     return arr[0];
+                
+            // }else{
+            //     return arr[0];
+            // }   
+        }
+    }
+    
+}
+
+class Grain{
+    private int grainId;
+    private String grainName;
+    private String state;
+    private int qtyInQuintal;
+    
+    public Grain(int id, String name, String st, int qiq){
+        this.grainId = id;
+        this.grainName = name;
+        this.state = st;
+        this.qtyInQuintal = qiq;
+        
+    }
+    
+    public int getId(){
+        return grainId;
+    }
+    public String getName(){
+        return grainName;
+    }
+    public String getState(){
+        return state;
+    }
+    public int getQuantity(){
+        return qtyInQuintal;
+    }
+}
+
+

@@ -1,0 +1,212 @@
+//photograpger-->
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static int countPhotographersBySpecialization(Photographer[] ph, String sp){
+        int count = 0;
+       for(int i = 0; i<ph.length; i++){
+            if(ph[i].getSpecialization().equalsIgnoreCase(sp)){
+                count++;
+            
+            }
+       }
+       return count;
+    }
+    public static Photographer getSecondHighestRatedPhotographer(Photographer[] ph){
+        
+        if(ph.length >=2){
+                    
+            for(int i = 0; i<ph.length;i++){
+                for(int j = i; j<ph.length;j++){
+                    if(ph[i].getRating()<ph[j].getRating()){
+                        // swap --
+                        Photographer p = ph[i];
+                        ph[i] = ph[j];
+                        ph[j] = p;
+                    }
+                }
+            }
+            
+            double rateHigh = ph[0].getRating();
+            Photographer[] arr = new Photographer[0];
+            
+            for(int i = 0; i<ph.length; i++){
+                if(ph[i].getRating() != rateHigh){
+                    arr = Arrays.copyOf(arr, arr.length+1);
+                    arr[arr.length-1] = ph[i];
+                }
+            }
+        
+            return arr[0];
+        }else{
+            return null;
+        }
+        
+        // return ph[ph.length-1];
+    
+    }
+    public static void main(String args[] ) throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); sc.nextLine();
+        Photographer[] j = new Photographer[n];
+        
+        for(int i =0; i<n; i++){
+            int a = sc.nextInt(); sc.nextLine();
+            String b = sc.nextLine();
+            String c = sc.nextLine();
+            double d = sc.nextDouble(); sc.nextLine();
+            
+            j[i] = new Photographer(a,b,c,d);
+        }
+        String aa = sc.nextLine();
+        
+        int res1 = Solution.countPhotographersBySpecialization(j, aa);
+        Photographer res2 = Solution.getSecondHighestRatedPhotographer(j);
+        
+        if(res1 > 0){
+            System.out.println("Number of photographers in " + aa + ": " +res1);
+        }else{
+            System.out.println("No photographers found for the given specialization.");
+        }
+        if(res2!=null){
+            System.out.println("id-"+res2.getId());
+            System.out.println("name-"+res2.getName());
+            System.out.println("specialization-"+res2.getSpecialization());
+            System.out.println("rating-"+res2.getRating());
+            
+        }else{
+            System.out.println("Second highest rated photographer not available.");
+        }
+    }
+}
+
+class Photographer{
+    int id;
+    String name;
+    String sp;
+    double rating;
+    
+    public Photographer(int id, String name, String sp, double rate){
+        this.id = id;
+        this.name = name;
+        this.sp = sp;
+        this.rating = rate;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getSpecialization(){
+        return sp;
+    }
+    public double getRating(){
+        return rating;
+    }
+}
+
+// Journalist
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static double findAverageExperienceByRegion(Journalist[] jr, String rn){
+        int count = 0;
+        int sum = 0;
+        for(int i =0; i<jr.length; i++){
+            if(jr[i].getRegion().equalsIgnoreCase(rn)){
+                count++;
+                sum+= jr[i].getExperience();
+            }
+        }
+        if(count==0)
+         return 0;
+        else
+         return (sum/count);
+    }
+    public static Journalist searchJournalistById(Journalist[] jr, int id){
+        for(int i = 0; i<jr.length ; i++){
+            if(jr[i].getId() == id){
+                return jr[i];
+            }
+        }
+        return null;
+        
+    }
+    public static void main(String args[] ) throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); sc.nextLine();
+        Journalist[] j = new Journalist[n];
+        
+        for(int i =0; i<n; i++){
+            int a = sc.nextInt(); sc.nextLine();
+            String b = sc.nextLine();
+            int c = sc.nextInt(); sc.nextLine();
+            String d = sc.nextLine();
+            
+            j[i] = new Journalist(a,b,c,d);
+        }
+        String aa = sc.nextLine();
+        int bb = sc.nextInt();
+        
+        double res1 = Solution.findAverageExperienceByRegion(j, aa);
+        Journalist res2 = Solution.searchJournalistById(j, bb);
+        
+        if(res1!= 0){
+            System.out.println("Average experience: "+res1);
+        }else{
+            System.out.println("No Journalist found from the given region.");
+        }
+        if(res2!=null){
+            System.out.println("id-"+res2.getId());
+            System.out.println("name-"+res2.getName());
+            System.out.println("experience-"+res2.getExperience());
+            System.out.println("region-"+res2.getRegion());
+            
+        }else{
+            System.out.println("No Journalist found with the given id.");
+        }
+    }
+}
+
+class Journalist{
+    int id;
+    String name;
+    int exp;
+    String region;
+    
+    public Journalist(int id, String name, int exp, String reg){
+        this.id = id;
+        this.name = name;
+        this.exp = exp;
+        this.region = reg;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    public String getName(){
+        return name;
+    }
+    public int getExperience(){
+        return exp;
+    }
+    public String getRegion(){
+        return region;
+    }
+}
+
+
